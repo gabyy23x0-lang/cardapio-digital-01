@@ -83,11 +83,13 @@ export default function App() {
     let message = `*NOVO PEDIDO - K_AÇAIETERIA*\n\n`;
     message += `👤 *Cliente:* ${customerName}\n`;
     message += `📱 *Telefone:* ${customerPhone}\n`;
-    message += `🛍️ *Tipo de Pedido:* ${orderType === 'delivery' ? 'Entrega' : 'Retirada no Local'}\n`;
+    message += `🛍️ *Tipo de Pedido:* ${orderType === 'delivery' ? 'Entrega (Delivery)' : 'Retirada no Local'}\n`;
     
     if (orderType === 'delivery') {
       message += `📍 *Endereço:* ${deliveryAddress}, Bairro: ${neighborhood}\n`;
       message += `💰 *Taxa de Entrega:* À consultar\n`;
+    } else {
+      message += `📍 *Endereço de Retirada:* Rua Coelho Paiva 26 - Mandacaru\n`;
     }
     
     message += `💳 *Forma de Pagamento:* ${paymentMethod}\n\n`;
@@ -146,10 +148,14 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             
-            {/* Logo & Title */}
+            {/* Logo & Title with Rich Purple Background */}
             <div className="flex items-center gap-4 text-center md:text-left">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-purple-900 border-2 border-purple-500 shadow-xl shadow-purple-900/50 flex items-center justify-center text-4xl md:text-5xl transform hover:scale-105 transition-transform duration-300">
-                💜
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-purple-950 border-2 border-purple-500 shadow-xl shadow-purple-900/50 overflow-hidden flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="https://i.postimg.cc/T3H2GS8q/Whats-App-Image-2026-11-21-at-03-32-16.jpg" 
+                  alt="K_Açaíteria Logo" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white flex items-center justify-center md:justify-start gap-2">
@@ -157,6 +163,9 @@ export default function App() {
                 </h1>
                 <p className="text-purple-200 text-sm md:text-base font-medium mt-1">
                   O verdadeiro sabor do açaí, sorvetes e delícias geladas!
+                </p>
+                <p className="text-pink-300 text-xs mt-1 font-semibold flex items-center justify-center md:justify-start gap-1">
+                  <MapPin className="w-3.5 h-3.5" /> Retirada: Rua Coelho Paiva 26 - Mandacaru
                 </p>
               </div>
             </div>
@@ -188,7 +197,7 @@ export default function App() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="O que você deseja pedir hoje? (ex: Açaí 500ml, Coxinha, Big Ninho...)"
+              placeholder="O que você deseja pedir hoje? (ex: Açaí 500ml, Empada, Big Ninho...)"
               className="w-full pl-12 pr-4 py-3.5 bg-purple-900/70 border border-purple-600/60 rounded-2xl text-white placeholder-purple-300/70 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent shadow-inner text-sm md:text-base transition-all"
             />
             {searchQuery && (
@@ -255,7 +264,7 @@ export default function App() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item) => {
-              const basePrice = item.price !== undefined ? item.price : (item.sizes ? item.sizes[0].price : 0);
+              const displayPrice = item.price !== undefined ? item.price : (item.sizes ? item.sizes[0].price : 0);
               return (
                 <div
                   key={item.id}
@@ -271,11 +280,12 @@ export default function App() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-purple-950/90 via-transparent to-transparent"></div>
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                      <span className="bg-pink-600/90 backdrop-blur-sm text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">
-                        {item.sizes ? `A partir de R$ ${item.sizes[0].price.toFixed(2).replace('.', ',')}` : `R$ ${item.price?.toFixed(2).replace('.', ',')}`}
+                      {/* Highly visible price badge */}
+                      <span className="bg-pink-600 text-white font-black text-sm px-3 py-1.5 rounded-xl shadow-lg ring-2 ring-pink-400/40">
+                        R$ {displayPrice.toFixed(2).replace('.', ',')}
                       </span>
-                      <span className="bg-purple-900/80 backdrop-blur-sm text-purple-200 text-xs px-2 py-1 rounded-lg border border-purple-700/50">
-                        {item.sizes ? `${item.sizes.length} tamanhos` : 'Pronto p/ pedir'}
+                      <span className="bg-purple-900/90 backdrop-blur-sm text-purple-200 text-xs px-2.5 py-1 rounded-lg border border-purple-700 font-semibold">
+                        {item.sizes ? 'Tamanho único' : 'Pronto'}
                       </span>
                     </div>
                   </div>
@@ -294,7 +304,7 @@ export default function App() {
                     </div>
 
                     <div className="mt-5 pt-3 border-t border-purple-800/60 flex items-center justify-between">
-                      <span className="text-xs text-purple-400 font-medium">Toque para personalizar</span>
+                      <span className="text-xs text-pink-400 font-bold uppercase tracking-wider">Montar & Pedir</span>
                       <button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white p-2.5 rounded-xl shadow-md group-hover:scale-105 transition">
                         <Plus className="w-4 h-4" />
                       </button>
@@ -379,6 +389,7 @@ export default function App() {
       {/* FOOTER */}
       <footer className="mt-20 border-t border-purple-900 bg-purple-950 py-10 text-center text-xs text-purple-400 space-y-3">
         <p className="text-purple-300 font-bold text-sm">K_Açaíteria • Todos os direitos reservados</p>
+        <p className="text-purple-200">📍 Endereço de Retirada: Rua Coelho Paiva 26 - Mandacaru</p>
         <p>Atendimento via WhatsApp: (83) 99691-4304</p>
         <p className="text-purple-500">Horário: Segunda a Domingo das 17:30 às 22:00 (Entregas até 00:00)</p>
       </footer>
@@ -402,14 +413,11 @@ function ItemModal({ item, onClose, onAdd }: ItemModalProps) {
   const [selectedAdditions, setSelectedAdditions] = useState<OptionItem[]>([]);
   const [observations, setObservations] = useState<string>('');
 
-  // Calculate total unit price
   const unitPrice = useMemo(() => {
     let base = selectedSize ? selectedSize.price : (item.price || 0);
-    // Additions prices
     selectedAdditions.forEach(add => {
       base += add.price;
     });
-    // Some mandatory rules might have prices (e.g. Leite condensado extra)
     Object.values(ruleSelections).forEach(opts => {
       opts.forEach(opt => {
         base += opt.price;
@@ -453,25 +461,14 @@ function ItemModal({ item, onClose, onAdd }: ItemModalProps) {
     }
   };
 
-  const handleAdditionToggle = (addition: OptionItem) => {
-    const exists = selectedAdditions.some(a => a.id === addition.id);
-    if (exists) {
-      setSelectedAdditions(prev => prev.filter(a => a.id !== addition.id));
-    } else {
-      setSelectedAdditions(prev => [...prev, addition]);
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate flavors min
     if (item.flavors && item.flavorMin && selectedFlavors.length < item.flavorMin) {
       alert(`Por favor, selecione no mínimo ${item.flavorMin} sabor(es).`);
       return;
     }
 
-    // Validate rules min
     if (item.customizationRules) {
       for (const rule of item.customizationRules) {
         const selected = ruleSelections[rule.title] || [];
@@ -530,7 +527,7 @@ function ItemModal({ item, onClose, onAdd }: ItemModalProps) {
           {item.sizes && item.sizes.length > 0 && (
             <div>
               <label className="block text-sm font-bold text-pink-300 mb-2">
-                Escolha o Tamanho <span className="text-xs font-normal text-purple-300">(Obrigatório)</span>
+                Opção Selecionada
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {item.sizes.map((size) => {
@@ -547,7 +544,7 @@ function ItemModal({ item, onClose, onAdd }: ItemModalProps) {
                       }`}
                     >
                       <span className="font-bold text-sm">{size.name}</span>
-                      <span className="text-xs font-semibold mt-1">R$ {size.price.toFixed(2).replace('.', ',')}</span>
+                      <span className="text-xs font-black mt-1 text-pink-300">R$ {size.price.toFixed(2).replace('.', ',')}</span>
                     </button>
                   );
                 })}
@@ -613,7 +610,25 @@ function ItemModal({ item, onClose, onAdd }: ItemModalProps) {
                     return (
                       <div
                         key={opt.id}
-                        onClick={() => handleRuleOptionToggle(rule.title, opt, rule.min, rule.max)}
+                        onClick={() => {
+                          const current = ruleSelections[rule.title] || [];
+                          const exists = current.some(o => o.id === opt.id);
+                          if (exists) {
+                            setRuleSelections(prev => ({
+                              ...prev,
+                              [rule.title]: current.filter(o => o.id !== opt.id)
+                            }));
+                          } else {
+                            if (rule.max && current.length >= rule.max) {
+                              alert(`Limite máximo de ${rule.max} opções.`);
+                              return;
+                            }
+                            setRuleSelections(prev => ({
+                              ...prev,
+                              [rule.title]: [...current, opt]
+                            }));
+                          }
+                        }}
                         className={`p-3 rounded-xl border cursor-pointer transition flex items-center justify-between ${
                           isSelected
                             ? 'bg-pink-600/30 border-pink-500 text-white shadow'
@@ -653,7 +668,7 @@ function ItemModal({ item, onClose, onAdd }: ItemModalProps) {
           <div className="pt-4 border-t border-purple-800 flex items-center justify-between gap-4">
             <div>
               <span className="text-xs text-purple-300 block">Total do Item</span>
-              <span className="text-xl font-black text-pink-400">R$ {unitPrice.toFixed(2).replace('.', ',')}</span>
+              <span className="text-2xl font-black text-pink-400">R$ {unitPrice.toFixed(2).replace('.', ',')}</span>
             </div>
             <button
               type="submit"
@@ -721,12 +736,11 @@ function CartDrawer({ cart, onClose, onUpdateQty, onOpenCheckout, subtotal }: Ca
                       </span>
                     )}
                   </div>
-                  <span className="font-black text-pink-400 text-sm">
+                  <span className="font-black text-pink-400 text-base">
                     R$ {ci.totalPrice.toFixed(2).replace('.', ',')}
                   </span>
                 </div>
 
-                {/* Customization details */}
                 {(ci.customization.selectedFlavors?.length || 0) > 0 && (
                   <div className="text-xs text-purple-300">
                     <strong>Sabores:</strong> {ci.customization.selectedFlavors?.map(f => f.name).join(', ')}
@@ -787,7 +801,7 @@ function CartDrawer({ cart, onClose, onUpdateQty, onOpenCheckout, subtotal }: Ca
                 <span>Taxa de Entrega</span>
                 <span className="text-pink-400 font-semibold">À consultar</span>
               </div>
-              <div className="flex justify-between text-base font-black text-white pt-2 border-t border-purple-800">
+              <div className="flex justify-between text-lg font-black text-white pt-2 border-t border-purple-800">
                 <span>Total estimado</span>
                 <span className="text-pink-400">R$ {subtotal.toFixed(2).replace('.', ',')}</span>
               </div>
@@ -795,7 +809,7 @@ function CartDrawer({ cart, onClose, onUpdateQty, onOpenCheckout, subtotal }: Ca
 
             <button
               onClick={onOpenCheckout}
-              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02] transition"
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02] transition"
             >
               <span>Continuar para Pagamento</span>
               <ChevronRight className="w-5 h-5" />
@@ -929,6 +943,12 @@ function CheckoutModal({
             {orderType === 'delivery' && (
               <p className="text-xs text-pink-400 mt-2 font-medium">⚠️ Taxa de entrega: à consultar no WhatsApp.</p>
             )}
+            {orderType === 'pickup' && (
+              <div className="mt-3 p-3 bg-purple-950/70 border border-purple-700 rounded-xl text-xs text-purple-200 space-y-1">
+                <p className="font-bold text-pink-300">📍 Endereço para Retirada:</p>
+                <p>Rua Coelho Paiva 26 - Mandacaru</p>
+              </div>
+            )}
           </div>
 
           {/* Customer Info */}
@@ -1020,7 +1040,7 @@ function CheckoutModal({
           <div className="pt-4 border-t border-purple-800 space-y-4">
             <div className="flex items-center justify-between text-sm text-purple-300">
               <span>Total dos Itens:</span>
-              <span className="font-bold text-white">R$ {subtotal.toFixed(2).replace('.', ',')}</span>
+              <span className="font-black text-pink-400 text-base">R$ {subtotal.toFixed(2).replace('.', ',')}</span>
             </div>
 
             <button
