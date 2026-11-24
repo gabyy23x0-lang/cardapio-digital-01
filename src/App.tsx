@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingBag, Search, Clock, MapPin, Phone, MessageCircle, 
   ChevronRight, Plus, Minus, X, Check, AlertCircle, Sparkles, 
@@ -150,13 +150,10 @@ export default function App() {
             
             {/* Logo & Title with Rich Purple Background */}
             <div className="flex items-center gap-4 text-center md:text-left">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-purple-950 border-2 border-purple-500 shadow-xl shadow-purple-900/50 overflow-hidden flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
-                <img 
-                  src="https://i.postimg.cc/T3H2GS8q/Whats-App-Image-2026-11-21-at-03-32-16.jpg" 
-                  alt="K_Açaíteria Logo" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <LogoAvatar
+                src="https://i.postimg.cc/T3H2GS8q/Whats-App-Image-2026-11-21-at-03-32-16.jpg"
+                alt="K_Açaíteria Logo"
+              />
               <div>
                 <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white flex items-center justify-center md:justify-start gap-2">
                   K_Açaíteria <Sparkles className="w-6 h-6 text-pink-400 animate-pulse" />
@@ -393,6 +390,115 @@ export default function App() {
         <p>Atendimento via WhatsApp: (83) 99691-4304</p>
         <p className="text-purple-500">Horário: Segunda a Domingo das 17:30 às 22:00 (Entregas até 00:00)</p>
       </footer>
+    </div>
+  );
+}
+
+// ==========================================
+// LOGO COMPONENT (STRIPS WHITE BACKGROUND)
+// ==========================================
+function LogoAvatar({ src, alt }: { src: string; alt: string }) {
+  const [processedSrc, setProcessedSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const size = 256;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.drawImage(img, 0, 0, size, size);
+        const imageData = ctx.getImageData(0, 0, size, size);
+        const data = imageData.data;
+
+        const isNearWhite = (idx: number) => {
+          const r = data[idx];
+          const g = data[idx + 1];
+          const b = data[idx + 2];
+          const maxC = Math.max(r, g, b);
+          const minC = Math.min(r, g, b);
+          return minC > 205 && (maxC - minC) < 40;
+        };
+
+        const visited = new Uint8Array(size * size);
+        const queue: number[] = [];
+
+        // Seed from all 4 borders
+        for (let x = 0; x < size; x++) {
+          queue.push(x, (size - 1) * size + x);
+        }
+        for (let y = 1; y < size - 1; y++) {
+          queue.push(y * size, y * size + (size - 1));
+        }
+
+        let head = 0;
+        while (head < queue.length) {
+          const pos = queue[head++];
+          if (visited[pos]) continue;
+          visited[pos] = 1;
+
+          const pxIdx = pos * 4;
+          if (!isNearWhite(pxIdx)) continue;
+
+          data[pxIdx + 3] = 0;
+
+          const x = pos % size;
+          const y = Math.floor(pos / size);
+          if (x > 0 && !visited[pos - 1]) queue.push(pos - 1);
+          if (x < size - 1 && !visited[pos + 1]) queue.push(pos + 1);
+          if (y > 0 && !visited[pos - size]) queue.push(pos - size);
+          if (y < size - 1 && !visited[pos + size]) queue.push(pos + size);
+        }
+
+        // Soften anti-aliased edge fringe
+        for (let pos = 0; pos < size * size; pos++) {
+          const pxIdx = pos * 4;
+          if (data[pxIdx + 3] === 0) continue;
+          const r = data[pxIdx];
+          const g = data[pxIdx + 1];
+          const b = data[pxIdx + 2];
+          const lum = (r + g + b) / 3;
+          const x = pos % size;
+          const y = Math.floor(pos / size);
+          const hasTransparentNeighbor =
+            (x > 0 && data[(pos - 1) * 4 + 3] === 0) ||
+            (x < size - 1 && data[(pos + 1) * 4 + 3] === 0) ||
+            (y > 0 && data[(pos - size) * 4 + 3] === 0) ||
+            (y < size - 1 && data[(pos + size) * 4 + 3] === 0);
+
+          if (hasTransparentNeighbor && lum > 175) {
+            data[pxIdx + 3] = Math.max(0, Math.round((255 - lum) * 3));
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        const resultUrl = canvas.toDataURL('image/png');
+        if (!cancelled) {
+          setProcessedSrc(resultUrl);
+        }
+      } catch {
+        // Fallback handled automatically by keeping original src with blend mode
+      }
+    };
+    img.src = src;
+    return () => {
+      cancelled = true;
+    };
+  }, [src]);
+
+  return (
+    <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-purple-700 via-purple-800 to-purple-950 border-2 border-purple-500 shadow-xl shadow-purple-900/50 overflow-hidden flex items-center justify-center transform hover:scale-105 transition-transform duration-300 p-1">
+      <img
+        src={processedSrc || src}
+        alt={alt}
+        className={`w-full h-full object-contain ${processedSrc ? '' : 'mix-blend-multiply'}`}
+      />
     </div>
   );
 }

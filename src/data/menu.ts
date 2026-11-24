@@ -17,7 +17,6 @@ const generalAdditions: OptionItem[] = [
   { id: 'ad3', name: 'Granola', price: 1.00 },
   { id: 'ad4', name: 'Gota de chocolate', price: 1.00 },
   { id: 'ad5', name: 'M&M do grande', price: 1.00 },
-  { id: 'ad6', name: 'Dentadura', price: 1.00 },
   { id: 'ad7', name: 'Doce Bananinha', price: 1.00 },
   { id: 'ad8', name: 'Doce tipo fini', price: 1.00 },
   { id: 'ad9', name: 'Paçoca', price: 1.00 },
@@ -25,9 +24,13 @@ const generalAdditions: OptionItem[] = [
   { id: 'ad11', name: 'Bolacha Oreo', price: 1.00 },
   { id: 'ad12', name: 'Mashemello torção', price: 1.00 },
   { id: 'ad13', name: 'Jujuba', price: 1.00 },
+  { id: 'ad29', name: 'Jujuba minhoca', price: 1.00 },
+  { id: 'ad30', name: 'Fini beijos', price: 1.50 },
   { id: 'ad14', name: 'Biju', price: 0.50 },
   { id: 'ad15', name: 'Casquinha', price: 1.50 },
-  { id: 'ad16', name: 'Nutella', price: 3.00 },
+  { id: 'ad31', name: 'Nutella ao redor do copo', price: 3.00 },
+  { id: 'ad32', name: 'Nutella à parte (5,00)', price: 5.00 },
+  { id: 'ad33', name: 'Nutella à parte (9,00)', price: 9.00 },
   { id: 'ad17', name: 'Creme ninho', price: 3.00 },
   { id: 'ad18', name: 'Creme avelã', price: 3.00 },
   { id: 'ad19', name: 'Creme Oreo', price: 3.00 },
@@ -42,13 +45,29 @@ const generalAdditions: OptionItem[] = [
   { id: 'ad28', name: 'Cobertura caramelo Salgado', price: 1.00 },
 ];
 
+const shakeAdditions: OptionItem[] = [
+  { id: 'shad1', name: 'Creme Ninho', price: 3.00 },
+  { id: 'shad2', name: 'Creme avelã', price: 3.00 },
+  { id: 'shad3', name: 'Creme de Oreo', price: 3.00 },
+  { id: 'shad4', name: 'Creme de morango', price: 3.00 },
+  { id: 'shad5', name: 'Leite condensado extra', price: 1.00 },
+  { id: 'shad6', name: 'Calda morango', price: 1.00 },
+  { id: 'shad7', name: 'Calda chocolate', price: 1.00 },
+  { id: 'shad8', name: 'Calda uva', price: 1.00 },
+  { id: 'shad9', name: 'Jujuba minhoca', price: 1.00 },
+  { id: 'shad10', name: 'Fini beijos', price: 1.50 },
+  { id: 'shad11', name: 'Nutella ao redor do copo', price: 3.00 },
+  { id: 'shad12', name: 'Nutella à parte (5,00)', price: 5.00 },
+  { id: 'shad13', name: 'Nutella à parte (9,00)', price: 9.00 },
+];
+
 const sorveteSabores: OptionItem[] = [
   { id: 's1', name: 'Sabor Delícia de morango', price: 0 },
   { id: 's2', name: 'Sabor Mousse de Maracujá', price: 0 },
   { id: 's3', name: 'Sabor ninho com Nutella', price: 0 },
   { id: 's4', name: 'Sabor Doce de leite com café', price: 0 },
-  { id: 's5', name: 'Sabor Flocos', price: 0 },
-  { id: 's6', name: 'Sabor Iogurte com Amarena', price: 0 },
+  { id: 's11', name: 'Sabor Creme', price: 0 },
+  { id: 's12', name: 'Sabor Prestígio', price: 0 },
   { id: 's7', name: 'Sabor Oreo', price: 0 },
   { id: 's8', name: 'Sabor Carioca ( chocolate preto e branco + barra chocolate)', price: 0 },
   { id: 's9', name: 'Sabor Petit gâteau', price: 0 },
@@ -214,16 +233,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'shad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'shad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'shad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'shad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'shad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'shad6', name: 'Calda morango', price: 1.00 },
-          { id: 'shad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'shad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -253,16 +263,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'shad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'shad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'shad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'shad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'shad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'shad6', name: 'Calda morango', price: 1.00 },
-          { id: 'shad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'shad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -292,16 +293,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'shad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'shad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'shad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'shad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'shad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'shad6', name: 'Calda morango', price: 1.00 },
-          { id: 'shad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'shad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -331,16 +323,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'shad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'shad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'shad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'shad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'shad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'shad6', name: 'Calda morango', price: 1.00 },
-          { id: 'shad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'shad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -353,6 +336,9 @@ export const menuItems: MenuItem[] = [
     category: 'milk-shake',
     image: 'https://i.postimg.cc/MXkmftj9/Whats-App-Image-2026-11-21-at-03-02-21.jpg',
     sizes: [{ name: '300ml', price: 9.00 }],
+    flavors: sorveteSabores,
+    flavorMin: 1,
+    flavorMax: 3,
     customizationRules: [
       {
         title: 'Acompanhamentos (máximo 1 opção obrigatória)',
@@ -370,16 +356,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'mksad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'mksad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'mksad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'mksad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'mksad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'mksad6', name: 'Calda morango', price: 1.00 },
-          { id: 'mksad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'mksad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -390,6 +367,9 @@ export const menuItems: MenuItem[] = [
     category: 'milk-shake',
     image: 'https://i.postimg.cc/MXkmftj9/Whats-App-Image-2026-11-21-at-03-02-21.jpg',
     sizes: [{ name: '400ml', price: 10.00 }],
+    flavors: sorveteSabores,
+    flavorMin: 1,
+    flavorMax: 3,
     customizationRules: [
       {
         title: 'Acompanhamentos (máximo 1 opção obrigatória)',
@@ -407,16 +387,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'mksad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'mksad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'mksad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'mksad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'mksad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'mksad6', name: 'Calda morango', price: 1.00 },
-          { id: 'mksad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'mksad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -427,6 +398,9 @@ export const menuItems: MenuItem[] = [
     category: 'milk-shake',
     image: 'https://i.postimg.cc/MXkmftj9/Whats-App-Image-2026-11-21-at-03-02-21.jpg',
     sizes: [{ name: '500ml', price: 11.00 }],
+    flavors: sorveteSabores,
+    flavorMin: 1,
+    flavorMax: 3,
     customizationRules: [
       {
         title: 'Acompanhamentos (máximo 1 opção obrigatória)',
@@ -444,16 +418,7 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Adicionais Extras',
         type: 'optional',
-        options: [
-          { id: 'mksad1', name: 'Creme Ninho', price: 3.00 },
-          { id: 'mksad2', name: 'Creme avelã', price: 3.00 },
-          { id: 'mksad3', name: 'Creme de Oreo', price: 3.00 },
-          { id: 'mksad4', name: 'Creme de morango', price: 3.00 },
-          { id: 'mksad5', name: 'Leite condensado extra', price: 1.00 },
-          { id: 'mksad6', name: 'Calda morango', price: 1.00 },
-          { id: 'mksad7', name: 'Calda chocolate', price: 1.00 },
-          { id: 'mksad8', name: 'Calda uva', price: 1.00 },
-        ]
+        options: shakeAdditions
       }
     ]
   },
@@ -775,7 +740,7 @@ export const menuItems: MenuItem[] = [
     id: 'coca-lata',
     name: 'Coca cola lata 350Ml',
     category: 'bebidas',
-    image: 'https://i.postimg.cc/ZqZBB2sr/Whats-App-Image-2026-11-21-at-03-27-16.jpg',
+    image: 'https://i.postimg.cc/nhdZq3Gc/Whats-App-Image-2026-11-24-at-19-43-47-(1).jpg',
     price: 5.00
   },
   {
